@@ -1,0 +1,331 @@
+{% comment %}
+  This block registers the styles and settings for the custom CTA in the header.
+  This block should only be used once to prevent style and setting clashes.
+
+  ## Inner workings
+  This block works by targeting a specific element on your page. The element will be replaced by an A-tag with the settings defined here.
+
+  Target: [data-action-replace]="cta-desktop"
+
+  ## CHANGELOG:
+  ### 1.0.0:
+  - Added basic settings: label, href, background_color, text_color, background_color_hover, text_color_hover, border_radius, padding_block, padding_inline, animation_type, icon, icon_position;
+  - Added setting to not display if label OR href are BLANK
+  - Added script with id 'cta_header_settings' to read data from
+  - Added stylesheet with specific ID and styles to make sure the button renders correctly
+{% endcomment %}
+
+{%- comment -%} Variable declarations {%- endcomment -%}
+{% liquid
+  assign settings = block.settings
+
+  assign button_id = 'hc_custom_' | append: block.id | append: '_button'
+  assign label = settings.label
+  assign href = settings.href
+  # === Colors ===
+  assign bg_color = settings.background_color
+  assign color = settings.text_color
+  assign hover_bg_color = settings.background_color_hover
+  assign hover_color = settings.text_color_hover
+  # === Layout ===
+  assign radius = settings.border_radius
+  assign padding_block = settings.padding_block
+  assign padding_inline = settings.padding_inline
+  # === Other ===
+  assign animation_type = settings.animation_type
+  assign icon = settings.icon
+  assign icon_position = settings.icon_position
+
+  assign should_display = false
+  assign has_icon = false
+  assign has_animation = false
+%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{%- liquid
+  # LOGIC: Only show if label AND href are set
+  if label != blank and href != blank
+    assign should_display = true
+  endif
+
+  # LOGIC: Default values
+  if radius == blank
+    assign radius = 0.75
+  endif
+
+  if padding_block == blank
+    assign padding_block = 0
+  endif
+
+  if padding_inline == blank
+    assign padding_inline = 0
+  endif
+
+  # LOGIC: Fallback colors
+  if bg_color == blank
+    assign bg_color = '#000000'
+  endif
+
+  if color == blank
+    assign color = '#ffffff'
+  endif
+
+  if hover_bg_color == blank
+    assign hover_bg_color = bg_color
+  endif
+
+  if hover_color == blank
+    assign hover_color = color
+  endif
+
+  # LOGIC: Check if an icon is set
+  if icon != blank
+    assign has_icon = true
+  endif
+
+  # LOGIC: Animations
+  unless animation_type == 'none'
+    assign has_animation = true
+  endunless
+-%}
+
+{% comment %} CTA Header Styles {% endcomment %}
+<style>
+  #{{ button_id }} {
+      background-color: {{ bg_color | color_to_rgb }};
+      color: {{ color | color_to_rgb }};
+      border-radius: {{ radius }}rem;
+      padding-block: {{ padding_block }}rem;
+      padding-inline: {{ padding_inline }}rem;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+
+      {% if has_icon %}
+        gap: 0.5rem;
+        flex-wrap: wrap;
+
+        {% if icon_position == 'right' %}
+          flex-direction: row-reverse;
+        {% endif %}
+      {% endif %}
+  }
+
+  {% if has_animation %}
+    #{{ button_id }} {
+      transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
+    }
+
+    #{{ button_id }}:hover {
+      transition: transform 0.2s ease-in, background-color 0.2s ease-in, color 0.2s ease-in;
+    }
+  {% endif %}
+
+  {% if animation_type == 'color_transition' %}
+    #{{ button_id }}:hover {
+      background-color: {{ hover_bg_color | color_to_rgb }};
+      color: {{ hover_color | color_to_rgb }};
+    }
+  {% endif %}
+
+  {% if animation_type == 'scale' %}
+    #{{ button_id }}:hover {
+      transform: scale(1.05);
+    }
+  {% endif %}
+</style>
+
+{%- comment -%} Global settings that the button should use. {%- endcomment -%}
+<script
+  id="cta_header_settings"
+  data-display="{{ should_display | json }}"
+  data-display-icon="{{ has_icon | json }}"
+  data-label="{{ label | json }}"
+  data-href="{{ href | json }}"
+  data-id="{{ button_id | json }}"
+  data-target-replace="[data-action-replace='cta-desktop']"
+  {% if has_icon %}
+    data-icon="{{ icon | asset_url | json }}"
+  {% endif %}
+>
+  const ownerTag = document.getElementById('cta_header_settings');
+  const ownerData = {
+    display: ownerTag.getAttribute('data-display'),
+    has_icon: ownerTag.getAttribute('data-display-icon'),
+    label: ownerTag.getAttribute('data-label'),
+    href: ownerTag.getAttribute('data-href'),
+    id: ownerTag.getAttribute('data-id'),
+    target: ownerTag.getAttribute('data-target-replace'),
+    icon: ownerTag.getAttribute('data-icon'),
+  };
+
+  /**
+   * Override the target element with the CTA button.
+   * This method should only be called when the display is set to the string true.
+   */
+  function overrideTarget() {
+    const target = document.querySelector(ownerData.target);
+    const button = document.createElement('a');
+
+    if (ownerData.has_icon) {
+      const icon = document.createElement('img');
+      icon.src = ownerData.icon;
+      icon.alt = ownerData.label;
+      button.appendChild(icon);
+    }
+
+    const text = document.createElement('span');
+    text.innerText = ownerData.label;
+    button.appendChild(text);
+
+    button.id = ownerData.id;
+    button.href = ownerData.href;
+
+    if (target) {
+      target.replaceWith(button);
+    }
+  }
+
+  if (ownerData.display === 'true') {
+    overrideTarget();
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:Blocks.CTAHeader.Name",
+  "target": "body",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:Headings.General.Content",
+      "info": "t:Headings.General.Info"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:Settings.Label.Label",
+      "info": "t:Settings.Label.Info",
+      "placeholder": "t:Settings.Label.Placeholder"
+    },
+    {
+      "type": "url",
+      "id": "href",
+      "label": "t:Settings.Url.Label",
+      "info": "t:Settings.Url.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Colors.Content",
+      "info": "t:Headings.Colors.Info"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:Settings.Colors.Background.Label",
+      "info": "t:Settings.Colors.Background.Info"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:Settings.Colors.Text.Label",
+      "info": "t:Settings.Colors.Text.Info"
+    },
+    {
+      "type": "color",
+      "id": "background_color_hover",
+      "label": "t:Settings.Colors.BackgroundHover.Label",
+      "info": "t:Settings.Colors.BackgroundHover.Info"
+    },
+    {
+      "type": "color",
+      "id": "text_color_hover",
+      "label": "t:Settings.Colors.TextHover.Label",
+      "info": "t:Settings.Colors.TextHover.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Layout.Content",
+      "info": "t:Headings.Animations.Content"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 5,
+      "step": 0.25,
+      "unit": "rem",
+      "label": "t:Settings.BorderRadius.Label",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_block",
+      "min": 0,
+      "max": 5,
+      "step": 0.25,
+      "unit": "rem",
+      "label": "t:Settings.Paddings.Block.Label",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_inline",
+      "min": 0,
+      "max": 5,
+      "step": 0.25,
+      "unit": "rem",
+      "label": "t:Settings.Paddings.Inline.Label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Other.Content",
+      "info": "t:Headings.Other.Info"
+    },
+    {
+      "type": "select",
+      "id": "animation_type",
+      "label": "t:Settings.AnimationType.Label",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:Settings.AnimationType.Options.None"
+        },
+        {
+          "value": "scale",
+          "label": "t:Settings.AnimationType.Options.Scale"
+        },
+        {
+          "value": "color_transition",
+          "label": "t:Settings.AnimationType.Options.Colors"
+        }
+      ],
+      "default": "none",
+      "info": "t:Settings.AnimationType.Info"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "t:Settings.Icon.Label"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "t:Settings.Icon.Position.Label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:Settings.Icon.Position.Options.Left"
+        },
+        {
+          "value": "right",
+          "label": "t:Settings.Icon.Position.Options.Right"
+        }
+      ],
+      "default": "left",
+      "info": "t:Settings.Icon.Position.Info"
+    }
+  ]
+}
+{% endschema %}
