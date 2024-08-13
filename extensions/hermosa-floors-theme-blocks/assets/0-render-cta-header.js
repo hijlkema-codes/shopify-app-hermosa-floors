@@ -17,7 +17,7 @@ function overrideTarget() {
   const target = document.querySelector(ownerData.target);
   const button = document.createElement("a");
 
-  if (ownerData.has_icon) {
+  if (ownerData.has_icon === "true") {
     const icon = document.createElement("img");
     icon.src = ownerData.icon;
     icon.alt = ownerData.label;
