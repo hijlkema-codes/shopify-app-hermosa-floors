@@ -5,10 +5,12 @@
  * @property {number} stars - The amount of stars available.
  *
  * @property {boolean} hasLabel - If there should be a label rendered.
+ * @property {boolean} hasAnchor - If there should be an achor label.
  *
  * @property {string} label - The HTML label associated with the review stars.
  * @property {string} target - The target element selector to replace.
- * @property {string} className - the parent classname to add to the stars.
+ * @property {string} className - The parent classname to add to the stars.
+ * @property {string} href - The href for the anchor label.
  */
 
 window.viewData = window.viewData || {};
@@ -67,7 +69,7 @@ window.viewData.reviewStars = new (class {
    * @param {HTMLElement} target
    */
   #renderStarsAndLabel(target) {
-    const { score, outOf, stars, label } = this.config;
+    const { score, outOf, stars, label, hasAnchor, href } = this.config;
 
     // Create a wrapper element to replace the target.
     const wrapperElement = document.createElement("div");
@@ -81,8 +83,9 @@ window.viewData.reviewStars = new (class {
     starElement.setAttribute("stars", stars);
 
     // Create the label element
-    const labelElement = document.createElement("p");
+    const labelElement = document.createElement(hasAnchor ? "a" : "p");
     labelElement.innerHTML = label;
+    if (hasAnchor) labelElement.href = href;
 
     // Make sure the star element is a child of the wrapper element.
     wrapperElement.append(starElement, labelElement);

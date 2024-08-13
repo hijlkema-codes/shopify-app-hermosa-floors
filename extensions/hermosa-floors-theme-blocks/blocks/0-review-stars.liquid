@@ -28,6 +28,7 @@
   assign star_highlight_color = settings.star_highlight_color
 
   assign has_label = false
+  assign has_href = false
   assign should_display = false
 %}
 
@@ -38,10 +39,15 @@
     assign has_label = true
   endunless
 
+  # LOGIC: Should not have an a-tag if no href is set
+  unless href == blank
+    assign has_href = true
+  endunless
+
   # LOGIC: Only show stars if the score and out_of are set
-  if score != blank and out_of != blank
+  unless score == blank or out_of == blank
     assign should_display = true
-  endif
+  endunless
 
   # LOGIC: Defaults
   if base_color == blank
@@ -73,6 +79,7 @@
   id="review_stars_settings"
   data-display="{{ should_display | json }}"
   data-display-label="{{ has_label | json }}"
+  data-display-anchor="{{ has_href | json }}"
   data-label="{{ label | json }}"
   data-score="{{ score | json }}"
   data-out-of="{{ out_of | json }}"
@@ -85,6 +92,7 @@
     const ownerData = {
       display: ownerTag.getAttribute('data-display') === 'true',
       displayLabel: ownerTag.getAttribute('data-display-label') === 'true',
+      displayAnchor: ownerTag.getAttribute('data-display-anchor') === 'true',
 
       label: ownerTag.getAttribute('data-label'),
       score: ownerTag.getAttribute('data-score'),
@@ -105,6 +113,7 @@
             stars: ownerData.stars,
 
             hasLabel: ownerData.displayLabel,
+            hasAnchor: ownerData.displayAnchor,
             label: ownerData.label,
 
             target: ownerData.targetReplace,
