@@ -1,0 +1,197 @@
+{%- comment -%}
+  This block registers the styles and settings for the custom reviews stars that can
+  be used all throughout the theme.
+
+  ## Ineer workings
+  This block works by registering a script that adds the custom element z-reviews.stars to the page.
+  This element will render the actual stars based on the settings defined here.
+
+  ## TODO
+  - Still missing the actual stars custom web element.
+{%- endcomment -%}
+
+{%- comment -%} Variable declarations {%- endcomment -%}
+{% liquid
+  assign settings = block.settings
+
+  # === General ===
+  assign button_class = 'hc_custom_' | append: block.id | append: '_reviews'
+  assign label = settings.label
+  assign score = settings.score
+  assign out_of = settings.out_of
+  assign stars = settings.stars
+  assign href = settings.href
+  # === Colors ===
+  assign base_color = settings.base_color
+  assign highlight_color = settings.highlight_color
+  assign star_base_color = settings.star_base_Color
+  assign star_highlight_color = settings.star_highlight_color
+
+  assign has_label = false
+  assign should_display = false
+%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{%- liquid
+  # LOGIC: Show label if exists
+  unless label == blank
+    assign has_label = true
+  endunless
+
+  # LOGIC: Only show stars if the score and out_of are set
+  if score != blank and out_of != blank
+    assign should_display = true
+  endif
+
+  # LOGIC: Defaults
+  if base_color == blank
+    assign base_color = '#000000'
+  endif
+
+  if highlight_color == blank
+    assign highlight_color = base_color
+  endif
+
+  if star_base_color == blank
+    assign star_base_color = '#000000'
+  endif
+
+  if star_highlight_color == blank
+    assign star_highlight_color = star_base_color
+  endif
+
+  if stars == blank
+    assign stars = 5
+  endif
+-%}
+
+{%- comment -%} Stars styles {%- endcomment -%}
+<style></style>
+
+{%- comment -%} Global settings that the stars should use {%- endcomment -%}
+<script
+  id="review_stars_settings"
+  data-display="{{ should_display | json }}"
+  data-display-label="{{ has_label | json }}"
+  data-label="{{ label | json }}"
+  data-score="{{ score | json }}"
+  data-out-of="{{ out_of | json }}"
+  data-stars="{{ stars | json }}"
+  data-classname="{{ button_class | json }}"
+  data-href="{{ href | json }}"
+  data-target-replace="[data-action-replace='review-stars']"
+>
+    const ownerTag = document.getElementById('review_stars_settings');
+    const ownerData = {
+      display: ownerTag.getAttribute('data-display') === 'true',
+      displayLabel: ownerTag.getAttribute('data-display-label') === 'true',
+
+      label: ownerTag.getAttribute('data-label'),
+      score: ownerTag.getAttribute('data-score'),
+      outOf: ownerTag.getAttribute('data-out-of'),
+      stars: ownerTag.getAttribute('data-stars'),
+
+      className: ownerTag.getAttribute('data-classname'),
+
+      href: ownerTag.getAttribute('data-href'),
+      targetReplace: ownerTag.getAttribute('data-target-replace'),
+    };
+  };
+
+    const handler = () => {
+        window.viewData.reviewStars.init({
+            score: ownerData.score,
+            outOf: ownerData.outOf,
+            stars: ownerData.stars,
+
+            hasLabel: ownerData.displayLabel,
+            label: ownerData.label,
+
+            target: ownerData.targetReplace,
+            className: ownerData.className,
+        });
+    };
+
+    document.addEventListener('loaded:render-review-stars', handler);
+</script>
+
+{%- comment -%} Load the script that contains the trigger for these elements {%- endcomment -%}
+<script src="{{ '0-render-review-stars.js' | asset_url }}" async defer crossorigin="anonymous"></script>
+
+{% schema %}
+{
+  "name": "t:Blocks.ReviewStars.Name",
+  "target": "body",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:Headings.General.Content",
+      "info": "t:Headings.General.Info"
+    },
+    {
+      "type": "text",
+      "id": "score",
+      "label": "t:Blocks.ReviewStars.Settings.Score.Label",
+      "info": "t:Blocks.ReviewStars.Settings.Score.Info",
+      "placeholder": "t:Blocks.ReviewStars.Settings.Score.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "out_of",
+      "label": "t:Blocks.ReviewStars.Settings.OutOf.Label",
+      "info": "t:Blocks.ReviewStars.Settings.OutOf.Info",
+      "placeholder": "t:Blocks.ReviewStars.Settings.OutOf.Placeholder"
+    },
+    {
+      "type": "range",
+      "id": "stars",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "t:Blocks.ReviewStars.Settings.Stars.Label",
+      "default": 5
+    },
+    {
+      "type": "liquid",
+      "id": "label",
+      "label": "t:Settings.Label.Label",
+      "default": "Klanten beoordelen ons <span>met een 9.9/10</span>"
+    },
+    {
+      "type": "url",
+      "id": "href",
+      "label": "t:Settings.Url.Label",
+      "info": "t:Settings.Url.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Colors.Content",
+      "info": "t:Headings.Colors.Info"
+    },
+    {
+      "type": "color",
+      "id": "base_color",
+      "label": "t:Blocks.ReviewStars.Settings.BaseColor.Label",
+      "info": "t:Blocks.ReviewStars.Settings.BaseColor.Info"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "t:Blocks.ReviewStars.Settings.HighlightColor.Label",
+      "info": "t:Blocks.ReviewStars.Settings.HighlightColor.Info"
+    },
+    {
+      "type": "color",
+      "id": "star_base_Color",
+      "label": "t:Blocks.ReviewStars.Settings.Stars.BaseColor.Label",
+      "info": "t:Blocks.ReviewStars.Settings.Stars.BaseColor.Info"
+    },
+    {
+      "type": "color",
+      "id": "star_highlight_color",
+      "label": "t:Blocks.ReviewStars.Settings.Stars.HighlightColor.Label",
+      "info": "t:Blocks.ReviewStars.Settings.Stars.HighlightColor.Info"
+    }
+  ]
+}
+{% endschema %}
