@@ -50,7 +50,7 @@
 
   # LOGIC: Default values
   if radius == blank
-    assign radius = 0.75
+    assign radius = 12
   endif
 
   if padding_block == blank
@@ -252,9 +252,9 @@
       "type": "range",
       "id": "border_radius",
       "min": 0,
-      "max": 5,
-      "step": 0.25,
-      "unit": "rem",
+      "max": 50,
+      "step": 4,
+      "unit": "px",
       "label": "t:Settings.BorderRadius.Label",
       "default": 0
     },
@@ -262,9 +262,9 @@
       "type": "range",
       "id": "padding_block",
       "min": 0,
-      "max": 5,
-      "step": 0.25,
-      "unit": "rem",
+      "max": 50,
+      "step": 4,
+      "unit": "px",
       "label": "t:Settings.Paddings.Block.Label",
       "default": 0
     },
@@ -272,9 +272,9 @@
       "type": "range",
       "id": "padding_inline",
       "min": 0,
-      "max": 5,
-      "step": 0.25,
-      "unit": "rem",
+      "max": 50,
+      "step": 4,
+      "unit": "px",
       "label": "t:Settings.Paddings.Inline.Label",
       "default": 0
     },
