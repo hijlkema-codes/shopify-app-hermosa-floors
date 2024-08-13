@@ -133,9 +133,9 @@
   id="cta_header_settings"
   data-display="{{ should_display | json }}"
   data-display-icon="{{ has_icon | json }}"
-  data-label="{{ label | json }}"
-  data-href="{{ href | json }}"
-  data-id="{{ button_id | json }}"
+  data-label="{{ label }}"
+  data-href="{{ href | link_to | json }}"
+  data-id="{{ button_id }}"
   data-target-replace="[data-action-replace='cta-desktop']"
   {% if has_icon %}
     data-icon="{{ icon | asset_url | json }}"
