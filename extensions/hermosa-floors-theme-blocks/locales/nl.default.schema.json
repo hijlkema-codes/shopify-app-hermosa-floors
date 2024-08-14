@@ -44,6 +44,27 @@
           "Placeholder": "#FFD700"
         }
       }
+    },
+    "HeaderStyles": {
+      "Label": "Header Styles",
+      "Settings": {
+        "MenuSpacing": {
+          "Label": "Extra witruimte menu"
+        },
+        "MenuJustification": {
+          "Label": "Menu uitlijning",
+          "Info": "Met deze uitlijning kan je het desktop menu over de volledige breedte verdelen.",
+          "Options": {
+            "Default": "Standaard",
+            "FlexStart": "Startrichting",
+            "SpaceBetween": "Gelijk verdeeld"
+          }
+        },
+        "ShowChevron": {
+          "Label": "Chevron tonen",
+          "Info": "Toon een icoon naast de hoofdmenu items op desktop."
+        }
+      }
     }
   },
   "Settings": {
@@ -137,5 +158,9 @@
       "Content": "Overige",
       "Info": "Overige instellingen voor dit blok."
     }
+  },
+  "Syntax": {
+    "Yes": "Ja",
+    "No": "Nee"
   }
 }

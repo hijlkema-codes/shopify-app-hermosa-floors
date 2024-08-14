@@ -1,0 +1,111 @@
+{%- comment -%}
+  This block registers the styles and settings for the header modifications.
+
+  ## Inner workings
+  This block works by registering styles that modify the header.
+{%- endcomment -%}
+
+{%- comment -%} Variable declarations {%- endcomment -%}
+{%- liquid
+  assign settings = section.settings
+
+  assign menu_spacing = settings.menu_spacing
+  assign menu_justification = settings.menu_justification
+  assign show_chevron = settings.show_chevron
+-%}
+
+{%- capture svg_icon -%}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+    <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+  </svg>
+{%- endcapture -%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{%- liquid
+  assign image = svg_icon | base64_encode
+-%}
+
+{%- capture chevron_styles -%}
+<style>
+    [data-desktop-nav] .header__item::after {
+        content: '';
+        width: 1em;
+        height: 1em;
+        background-image: url('data:image/svg+xml;base64,{{ image }}');
+      }
+</style>
+{%- endcapture -%}
+
+{%- comment -%} Styles {%- endcomment -%}
+
+{%- if show_chevron == 'yes' -%}
+  {{ chevron_styles }}
+{%- endif -%}
+
+<style>
+  .header_nav[data-desktop-nav] {
+      display: flex;
+      align-items: center;
+      gap: {{ menu_spacing }}px;
+      {%- unless menu_justification == "default" -%}
+        justify-content: {{ section.settings.menu_justification }};
+      {%- endunless -%}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "t:Blocks.HeaderStyles.Name",
+  "target": "body",
+  "settings": [
+    {
+      "type": "range",
+      "id": "menu_spacing",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "t:Blocks.HeaderStyles.Settings.MenuSpacing.Label",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "menu_justification",
+      "label": "t:Blocks.HeaderStyles.Settings.MenuJustification.Label",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:Blocks.HeaderStyles.Settings.MenuJustification.Options.Default"
+        },
+        {
+          "value": "flex-start",
+          "label": "t:Blocks.HeaderStyles.Settings.MenuJustification.Options.FlexStart"
+        },
+        {
+          "value": "space-between",
+          "label": "t:Blocks.HeaderStyles.Settings.MenuJustification.Options.SpaceBetween"
+        }
+      ],
+      "default": "default",
+      "info": "t:Blocks.HeaderStyles.Settings.MenuJustification.Info"
+    },
+    {
+      "type": "select",
+      "id": "show_chevron",
+      "label": "t:Blocks.HeaderStyles.Settings.ShowChevron.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "yes",
+      "info": "t:Blocks.HeaderStyles.Settings.ShowChevron.Info"
+    }
+  ]
+}
+{% endschema %}
