@@ -1,7 +1,13 @@
 {
   "Blocks": {
     "CTAHeader": {
-      "Name": "Call To Action Header"
+      "Name": "Call To Action Header",
+      "Settings": {
+        "HasIcon": {
+          "Label": "Icoon tonen",
+          "Info": "Toon een winkel icoon naast de tekst."
+        }
+      }
     },
     "ReviewStars": {
       "Name": "Review Stars",
