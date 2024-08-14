@@ -7,7 +7,7 @@
 
 {%- comment -%} Variable declarations {%- endcomment -%}
 {%- liquid
-  assign settings = section.settings
+  assign settings = block.settings
 
   assign menu_spacing = settings.menu_spacing
   assign menu_justification = settings.menu_justification
@@ -48,9 +48,9 @@
       display: flex;
       align-items: center;
       gap: {{ menu_spacing }}px;
-      {%- unless menu_justification == "default" -%}
-        justify-content: {{ section.settings.menu_justification }};
-      {%- endunless -%}
+      {% unless menu_justification == "default" -%}
+        justify-content: {{ menu_justification }};
+      {%- endunless %}
   }
 </style>
 
