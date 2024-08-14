@@ -154,7 +154,9 @@
   data-target-replace="[data-action-replace='cta-desktop']"
 ></script>
 
-<script src="{{ '0-render-cta-header.js' | asset_url }}" defer></script>
+<script src="{{ 'review-stars.js' | asset_url }}" defer async type="module"></script>
+
+<script src="{{ '0-render-cta-header.js' | asset_url }}" defer type="module"></script>
 
 {% schema %}
 {

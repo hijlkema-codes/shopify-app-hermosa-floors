@@ -62,6 +62,10 @@
       "Info": "De hoekafrondingen van een element.",
       "Placeholder": "5px"
     },
+    "ExtraStyles": {
+      "Label": "Extra stijlregels",
+      "Info": "Extra CSS stijlregels die worden toegepast op het element. de tekens %% worden vervangen met het unieke ID, of de classname van het blok."
+    },
     "AnimationType": {
       "Label": "Animatie",
       "Info": "Het type animatie dat wordt gebruikt bij laden of interactie van een element.",

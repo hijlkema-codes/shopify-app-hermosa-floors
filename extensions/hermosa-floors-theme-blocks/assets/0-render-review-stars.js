@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} ReviewStars
- * @property {number} score - The current score.
+ * @property {string} score - The string representation of the current score.
  * @property {number} outOf - The highest available score.
  * @property {number} stars - The amount of stars available.
  *
@@ -20,7 +20,7 @@ window.viewData.reviewStars = new (class {
    * @param {ReviewStars} config
    * @returns {void}
    */
-  constructor(config) {
+  init(config) {
     this.config = config;
   }
 
@@ -74,13 +74,15 @@ window.viewData.reviewStars = new (class {
     // Create a wrapper element to replace the target.
     const wrapperElement = document.createElement("div");
     wrapperElement.className = target.className;
-    wrapperElement.classList.add(this.config.className);
+    if (!!this.config.className)
+      wrapperElement.classList.add(this.config.className);
 
     // Create the star element.
     const starElement = document.createElement("z-reviews.stars");
-    starElement.setAttribute("score", score);
+    starElement.setAttribute("rating", parseFloat(score.replace(",", ".")));
     starElement.setAttribute("out-of", outOf);
     starElement.setAttribute("stars", stars);
+    starElement.setAttribute("allow-fractional", "true");
 
     // Create the label element
     const labelElement = document.createElement(hasAnchor ? "a" : "p");
@@ -95,7 +97,38 @@ window.viewData.reviewStars = new (class {
   }
 })();
 
-const loadedEvent = new CustomEvent("loaded:render-review-stars", {
-  detail: window.viewData.reviewStars,
-});
-document.body.dispatchEvent(loadedEvent);
+const ownerTag = document.getElementById("review_stars_settings");
+const ownerData = {
+  display: ownerTag.getAttribute("data-display") === "true",
+  displayLabel: ownerTag.getAttribute("data-display-label") === "true",
+  displayAnchor: ownerTag.getAttribute("data-display-anchor") === "true",
+
+  label: ownerTag.getAttribute("data-label"),
+  score: ownerTag.getAttribute("data-score"),
+  outOf: ownerTag.getAttribute("data-out-of"),
+  stars: ownerTag.getAttribute("data-stars"),
+
+  className: ownerTag.getAttribute("data-classname"),
+
+  href: ownerTag.getAttribute("data-href"),
+  targetReplace: ownerTag.getAttribute("data-target-replace"),
+};
+
+const handler = () => {
+  window.viewData.reviewStars.init({
+    score: ownerData.score,
+    outOf: ownerData.outOf,
+    stars: ownerData.stars,
+
+    hasLabel: ownerData.displayLabel,
+    hasAnchor: ownerData.displayAnchor,
+    label: ownerData.label,
+
+    target: ownerData.targetReplace,
+    className: ownerData.className,
+  });
+
+  window.viewData.reviewStars.loop();
+};
+
+handler();

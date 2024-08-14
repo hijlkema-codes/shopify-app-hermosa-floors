@@ -26,6 +26,8 @@
   assign highlight_color = settings.highlight_color
   assign star_base_color = settings.star_base_Color
   assign star_highlight_color = settings.star_highlight_color
+  # === Others ===
+  assign extra_styles = settings.extra_styles | replace: '%%', button_class
 
   assign has_label = false
   assign has_href = false
@@ -72,7 +74,33 @@
 -%}
 
 {%- comment -%} Stars styles {%- endcomment -%}
-<style></style>
+<style>
+  .{{  button_class }} {
+    color: {{ base_color | color_to_hsl }};
+  }
+
+  .{{ button_class }} p,
+  .{{ button_class }} a {
+    color: {{ base_color | color_to_hsl }};
+    text-decoration: none;
+  }
+
+  .{{ button_class }} p span,
+  .{{ button_class }} a span {
+    color: {{ highlight_color | color_to_hsl }};
+  }
+
+  .{{ button_class }} a:hover {
+    text-decoration: underline;
+  }
+
+  z-reviews\.stars {
+    width: max-content;
+  }
+
+
+  {{- extra_styles -}}
+</style>
 
 {%- comment -%} Global settings that the stars should use {%- endcomment -%}
 <script
@@ -80,49 +108,14 @@
   data-display="{{ should_display | json }}"
   data-display-label="{{ has_label | json }}"
   data-display-anchor="{{ has_href | json }}"
-  data-label="{{ label | json }}"
-  data-score="{{ score | json }}"
-  data-out-of="{{ out_of | json }}"
+  data-label="{{ label | escape_once }}"
+  data-score="{{ score }}"
+  data-out-of="{{ out_of }}"
   data-stars="{{ stars | json }}"
-  data-classname="{{ button_class | json }}"
-  data-href="{{ href | json }}"
+  data-classname="{{ button_class }}"
+  data-href="{{ href }}"
   data-target-replace="[data-action-replace='review-stars']"
->
-    const ownerTag = document.getElementById('review_stars_settings');
-    const ownerData = {
-      display: ownerTag.getAttribute('data-display') === 'true',
-      displayLabel: ownerTag.getAttribute('data-display-label') === 'true',
-      displayAnchor: ownerTag.getAttribute('data-display-anchor') === 'true',
-
-      label: ownerTag.getAttribute('data-label'),
-      score: ownerTag.getAttribute('data-score'),
-      outOf: ownerTag.getAttribute('data-out-of'),
-      stars: ownerTag.getAttribute('data-stars'),
-
-      className: ownerTag.getAttribute('data-classname'),
-
-      href: ownerTag.getAttribute('data-href'),
-      targetReplace: ownerTag.getAttribute('data-target-replace'),
-    };
-  };
-
-    const handler = () => {
-        window.viewData.reviewStars.init({
-            score: ownerData.score,
-            outOf: ownerData.outOf,
-            stars: ownerData.stars,
-
-            hasLabel: ownerData.displayLabel,
-            hasAnchor: ownerData.displayAnchor,
-            label: ownerData.label,
-
-            target: ownerData.targetReplace,
-            className: ownerData.className,
-        });
-    };
-
-    document.addEventListener('loaded:render-review-stars', handler);
-</script>
+></script>
 
 {%- comment -%} Load the script that contains the trigger for these elements {%- endcomment -%}
 <script src="{{ '0-render-review-stars.js' | asset_url }}" async defer crossorigin="anonymous"></script>
@@ -200,6 +193,17 @@
       "id": "star_highlight_color",
       "label": "t:Blocks.ReviewStars.Settings.Stars.HighlightColor.Label",
       "info": "t:Blocks.ReviewStars.Settings.Stars.HighlightColor.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Other.Content",
+      "info": "t:Headings.Other.Info"
+    },
+    {
+      "type": "liquid",
+      "id": "extra_styles",
+      "label": "t:Settiongs.ExtraStyles.Label",
+      "info": "t:Settiongs.ExtraStyles.Info"
     }
   ]
 }
