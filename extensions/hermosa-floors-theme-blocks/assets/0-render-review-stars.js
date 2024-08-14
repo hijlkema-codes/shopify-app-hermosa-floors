@@ -131,4 +131,10 @@ const handler = () => {
   window.viewData.reviewStars.loop();
 };
 
+document.body.addEventListener("click", ({ target }) => {
+  if (target.hasAttribute("data-sidebar-button")) {
+    handler();
+  }
+});
+
 handler();
