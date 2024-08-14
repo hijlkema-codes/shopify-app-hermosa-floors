@@ -47,13 +47,15 @@
 {%- endif -%}
 
 <style id="hc_custom_menu_styles">
-  .header__nav[data-desktop-nav] {
+  @media screen and (min-width: 768px) {
+    .header__nav[data-desktop-nav] {
       display: flex;
       align-items: center;
       gap: {{ menu_spacing }}px;
       {% unless menu_justification == "default" -%}
         justify-content: {{ menu_justification }};
       {%- endunless %}
+    }
   }
 </style>
 
