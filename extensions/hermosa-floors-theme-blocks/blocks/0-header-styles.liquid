@@ -33,6 +33,9 @@
         width: 1em;
         height: 1em;
         background-image: url('data:image/svg+xml;base64,{{ image }}');
+        background-repeat: no-repeat;
+        background-size: 1em 1em;
+        margin-left: 0.5rem;
       }
 </style>
 {%- endcapture -%}
@@ -44,7 +47,7 @@
 {%- endif -%}
 
 <style id="hc_custom_menu_styles">
-  .header_nav[data-desktop-nav] {
+  .header__nav[data-desktop-nav] {
       display: flex;
       align-items: center;
       gap: {{ menu_spacing }}px;
