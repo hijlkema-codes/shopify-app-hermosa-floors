@@ -46,7 +46,7 @@
       }
     },
     "HeaderStyles": {
-      "Label": "Header Styles",
+      "Name": "Header Styles",
       "Settings": {
         "MenuSpacing": {
           "Label": "Extra witruimte menu"
@@ -63,6 +63,11 @@
         "ShowChevron": {
           "Label": "Chevron tonen",
           "Info": "Toon een icoon naast de hoofdmenu items op desktop."
+        },
+        "ChevronColor": {
+          "Label": "Chevron kleur",
+          "Info": "De kleur van het chevron icoon.",
+          "Placeholder": "#000000"
         }
       }
     }
