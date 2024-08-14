@@ -1,12 +1,14 @@
 const ownerTag = document.getElementById("cta_header_settings");
 const ownerData = {
-  display: ownerTag.getAttribute("data-display"),
-  has_icon: ownerTag.getAttribute("data-display-icon"),
+  display: ownerTag.getAttribute("data-display") === "true",
+  has_icon: ownerTag.getAttribute("data-display-icon") === "true",
+
   label: ownerTag.getAttribute("data-label"),
   href: ownerTag.getAttribute("data-href"),
   id: ownerTag.getAttribute("data-id"),
+
   target: ownerTag.getAttribute("data-target-replace"),
-  icon: ownerTag.getAttribute("data-icon"),
+  iconTemplate: ownerTag.getAttribute("data-icon-id"),
 };
 
 /**
@@ -17,10 +19,10 @@ function overrideTarget() {
   const target = document.querySelector(ownerData.target);
   const button = document.createElement("a");
 
-  if (ownerData.has_icon === "true") {
-    const icon = document.createElement("img");
-    icon.src = ownerData.icon;
-    icon.alt = ownerData.label;
+  if (ownerData.has_icon) {
+    // Get the template tag first child
+    const iconTemplate = document.getElementById(ownerData.iconTemplate);
+    const icon = iconTemplate.content.cloneNode(true);
     button.appendChild(icon);
   }
 
@@ -36,6 +38,6 @@ function overrideTarget() {
   }
 }
 
-if (ownerData.display === "true") {
+if (ownerData.display) {
   overrideTarget();
 }

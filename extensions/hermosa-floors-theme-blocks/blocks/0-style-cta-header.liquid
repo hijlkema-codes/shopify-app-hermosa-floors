@@ -26,12 +26,12 @@
   assign padding_inline = settings.padding_inline
   # === Other ===
   assign animation_type = settings.animation_type
-  assign icon = settings.icon
   assign icon_position = settings.icon_position
+  assign has_icon = settings.has_icon
 
   assign should_display = false
-  assign has_icon = false
   assign has_animation = false
+  assign template_tag_id = 'hc_custom_' | append: block.id | append: '_template'
 %}
 
 {%- comment -%} Logic {%- endcomment -%}
@@ -71,11 +71,6 @@
     assign hover_color = color
   endif
 
-  # LOGIC: Check if an icon is set
-  if icon != blank
-    assign has_icon = true
-  endif
-
   # LOGIC: Animations
   unless animation_type == 'none'
     assign has_animation = true
@@ -96,7 +91,7 @@
       cursor: pointer;
 
       {% if has_icon %}
-        gap: 0.5rem;
+        gap: 1rem;
         flex-wrap: wrap;
 
         {% if icon_position == 'right' %}
@@ -127,20 +122,36 @@
       transform: scale(1.05);
     }
   {% endif %}
+
+  {% if has_icon %}
+    #{{ button_id }} svg {
+      width: 1.25em;
+      height: 1.25em;
+      fill: currentcolor;
+    }
+  {% endif %}
 </style>
+
+{% if has_icon %}
+  <template id="{{ template_tag_id }}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+      <path d="M36.8 192l566.3 0c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0L121.7 0c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224l0 160 0 80c0 26.5 21.5 48 48 48l224 0c26.5 0 48-21.5 48-48l0-80 0-160-64 0 0 160-192 0 0-160-64 0zm448 0l0 256c0 17.7 14.3 32 32 32s32-14.3 32-32l0-256-64 0z"/>
+    </svg>
+  </template>
+{% endif %}
 
 {%- comment -%} Global settings that the button should use. {%- endcomment -%}
 <script
   id="cta_header_settings"
   data-display="{{ should_display | json }}"
   data-display-icon="{{ has_icon | json }}"
+
   data-label="{{ label }}"
-  data-href="{{ href | link_to | json }}"
+  data-href="{{ href }}"
   data-id="{{ button_id }}"
+  data-icon-id="{{ template_tag_id }}"
+
   data-target-replace="[data-action-replace='cta-desktop']"
-  {% if has_icon %}
-    data-icon="{{ icon | asset_url | json }}"
-  {% endif %}
 ></script>
 
 <script src="{{ '0-render-cta-header.js' | asset_url }}" defer></script>
@@ -200,7 +211,7 @@
     {
       "type": "header",
       "content": "t:Headings.Layout.Content",
-      "info": "t:Headings.Animations.Content"
+      "info": "t:Headings.Layout.Content"
     },
     {
       "type": "range",
@@ -259,9 +270,11 @@
       "info": "t:Settings.AnimationType.Info"
     },
     {
-      "type": "image_picker",
-      "id": "icon",
-      "label": "t:Settings.Icon.Label"
+      "type": "checkbox",
+      "id": "has_icon",
+      "label": "t:Blocks.ReviewStars.Settings.HasIcon.Label",
+      "default": false,
+      "info": "t:Blocks.ReviewStars.Settings.HasIcon.Info"
     },
     {
       "type": "select",

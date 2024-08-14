@@ -2,6 +2,42 @@
   "Blocks": {
     "CTAHeader": {
       "Name": "Call To Action Header"
+    },
+    "ReviewStars": {
+      "Name": "Review Stars",
+      "Settings": {
+        "Score": {
+          "Label": "Score",
+          "Info": "De score die wordt weergegeven in de vorm van sterren.",
+          "placeholder": "9"
+        },
+        "OutOf": {
+          "Label": "Totaalscore",
+          "Info": "Het maximale aantal punten dat kan worden behaald.",
+          "placeholder": "10"
+        },
+        "Stars": {
+          "Label": "Aantal sterren",
+          "BaseColor": {
+            "Label": "Basiskleur",
+            "Info": "De standaard kleur van de sterren."
+          },
+          "HighlightColor": {
+            "Label": "Highlight kleur",
+            "Info": "De kleur van de sterren wanneer ze worden gemarkeerd."
+          }
+        },
+        "BaseColor": {
+          "Label": "Basiskleur",
+          "Info": "De standaard kleur van de tekst.",
+          "Placeholder": "#FFD700"
+        },
+        "HighlightColor": {
+          "Label": "Highlight kleur",
+          "Info": "De kleur van de tekst wanneer deze wordt gemarkeerd.",
+          "Placeholder": "#FFD700"
+        }
+      }
     }
   },
   "Settings": {
