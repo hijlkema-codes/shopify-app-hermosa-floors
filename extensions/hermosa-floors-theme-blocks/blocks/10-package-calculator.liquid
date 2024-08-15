@@ -1,0 +1,152 @@
+{%- comment -%}
+  This block registers the specific block that will be used to calculate the package price.
+
+  ## Inner workings
+{%- endcomment -%}
+{%- liquid
+  assign product = product
+  assign settings = block.settings
+  assign block_id = block.id
+
+  assign section_id = 'hc_custom_' | append: block_id | append: '_section'
+  assign alert_id = 'hc_custom_' | append: block_id | append: '_alert'
+  assign input_id = 'hc_custom_' | append: block_id | append: '_input'
+
+  # === Common ===
+  assign label = settings.label
+
+  assign show_label = false
+-%}
+
+{%- comment -%}Block specific logic{%- endcomment -%}
+{%- liquid
+  # LOGIC: Only show if label is set
+  unless label == blank
+    assign show_label = true
+  endunless
+-%}
+
+{%- capture label_html -%}
+    <label for="{{ input_id }}">{{ label }}</label>
+{%- endcapture -%}
+
+{%- comment -%} Styling {%- endcomment -%}
+<style id="{{ block_id }}_styles"></style>
+
+<package-calculator
+  aria-expanded="false"
+  data-product-id="{{ product.first_available_variant.id }}"
+  {% unless product.available %}
+    aria-disabled="true"
+  {% endunless %}
+>
+  <form
+    {% unless product.available %}
+      aria-disabled="true"
+      disabled
+    {% endunless %}
+  >
+    <fieldset class="package-calculator__field">
+      {{- label_html -}}
+
+      <input
+        class="package-calculator__input"
+        type="number"
+        min="0"
+        id="{{ input_id }}"
+        required
+      >
+    </fieldset>
+  </form>
+</package-calculator>
+
+<script src="{{ '10-package-calculator.js' | asset_url }}" async defer></script>
+
+{% if request.design_mode %}
+  <p role="alert" id="{{ alert_id }}">Please make sure to keep the add to cart button visible on the page.</p>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:Blocks.PackageCalculator.Name",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:Settings.Title.Label",
+      "default": "Bereken het aantal pakketten",
+      "info": "t:Settings.Title.Info",
+      "placeholder": "t:Settings.Title.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:Settings.Label.Info",
+      "default": "Voor welk oppervlakte",
+      "info": "t:Settings.Label.Info",
+      "placeholder": "t:Settings.Label.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "t:Settings.Placeholder.Label",
+      "default": "Aantal m²",
+      "info": "t:Settings.Placeholder.Info",
+      "placeholder": "t:Settings.Placeholder.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:Blocks.PackageCalculator.ButtonLabel.Label",
+      "default": "Berekenen",
+      "info": "t:Blocks.PackageCalculator.ButtonLabel.Info",
+      "placeholder": "t:Blocks.PackageCalculator.ButtonLabel.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "selected_label",
+      "label": "t:Blocks.PackageCalculator.SelectedLabel.Label",
+      "default": "%1% pak(ken) voor %2% m²",
+      "info": "t:Blocks.PackageCalculator.SelectedLabel.Info",
+      "placeholder": "t:Blocks.PackageCalculator.SelectedLabel.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "cutting_loss_notice",
+      "label": "t:Blocks.PackageCalculator.CuttingLossNotice.Label",
+      "default": "Deze calculator houdt rekening met %% snijverlies.",
+      "info": "t:Blocks.PackageCalculator.CuttingLossNotice.Info",
+      "placeholder": "t:Blocks.PackageCalculator.CuttingLossNotice.Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "t:Blocks.PackageCalculator.TotalLabel.Label",
+      "default": "Totaalprijs",
+      "info": "t:Blocks.PackageCalculator.TotalPrice.Info",
+      "placeholder": "t:Blocks.PackageCalculator.TotalPrice.Placeholder"
+    },
+    {
+      "type": "select",
+      "id": "show_currency_sign",
+      "label": "t:Settings.ShowCurrencySign.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "yes",
+      "info": "t:Settings.ShowCurrencySign.Info"
+    }
+  ]
+}
+{% endschema %}
