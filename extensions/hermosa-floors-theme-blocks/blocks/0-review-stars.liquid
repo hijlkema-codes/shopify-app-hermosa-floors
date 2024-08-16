@@ -74,6 +74,8 @@
 <style>
   .{{  button_class }} {
     color: {{ base_color | color_to_hsl }};
+    --empty-star-color: {{ star_base_color | color_to_hsl }};
+    --filled-star-color: {{ star_highlight_color | color_to_hsl }};
   }
 
   .{{ button_class }} p,
