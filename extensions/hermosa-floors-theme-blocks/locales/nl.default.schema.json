@@ -70,9 +70,39 @@
           "Placeholder": "#000000"
         }
       }
+    },
+    "PackageCalculator": {
+      "Name": "Verpakking rekenmachine",
+      "Settings": {
+        "TotalLabel": {
+          "Label": "Totaal label",
+          "Info": "Het label dat wordt weergegeven naast het totaalbedrag.",
+          "Placeholder": "Totaal"
+        },
+        "CuttingLossNotice": {
+          "Label": "Snijverlies melding",
+          "Info": "Een melding die wordt weergegeven om de gebruiker te informeren over snijverlies.",
+          "Placeholder": "Let op: het systeem vult het snijverlies in als vervanging voor '%%'."
+        },
+        "SelectedLabel": {
+          "Label": "Geselecteerd label",
+          "Info": "Gebruik %1% voor het aantal pakken uit de berekening. Gebruik %2% voor het ingevoerde aantal m².",
+          "Placeholder": "%1% pak(ken) voor %2% m²"
+        },
+        "ButtonLabel": {
+          "Label": "Knop label",
+          "Info": "Het label van de knop die de berekening start.",
+          "Placeholder": "Bereken"
+        }
+      }
     }
   },
   "Settings": {
+    "Title": {
+      "Label": "Titel",
+      "Info": "De titel van het blok.",
+      "Placeholder": "Dit is een titel..."
+    },
     "Label": {
       "Label": "Label",
       "Info": "Een label is een korte tekst met relevante informatie over een element.",
@@ -82,6 +112,11 @@
       "Label": "URL",
       "Info": "Een link of verwijzing naar een andere pagina, website of browser actie.",
       "Placeholder": "https://www.example.com"
+    },
+    "Placeholder": {
+      "Label": "Plaatsaanduiding",
+      "Info": "Een voorbeeldtekst die wordt weergegeven in een invoerveld totdat de gebruiker een waarde invoert.",
+      "Placeholder": "Dit is een plaatsaanduiding..."
     },
     "BorderRadius": {
       "Label": "Hoekafrondingen",
@@ -144,6 +179,10 @@
         "Info": "De kleur van de tekst van een element wanneer de muis erover beweegt.",
         "Placeholder": "#F4F4F4"
       }
+    },
+    "ShowCurrencySign": {
+      "Label": "Valuta tonen",
+      "Info": "Toon het valutasymbool voor het bedrag."
     }
   },
   "Headings": {
