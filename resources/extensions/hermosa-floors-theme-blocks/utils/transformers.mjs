@@ -11,18 +11,23 @@ const TRANSFORMERS = {
   parse_boolean: (value) =>
     ["true", "1", "on", "yes"].includes(value.toLowerCase()),
 
-  /**
-   * Transform a cents number value into a string representation of the price.
-   * @param {number} value The price in cents
-   * @returns {string} The price as string.
-   */
-  to_string: (value) => {
+  to_currency: (value) => {
     const formatter = new Intl.NumberFormat(undefined, {
       currency: "EUR",
       style: "currency",
     });
 
-    return formatter.format(value / 100);
+    return formatter.format(value);
+  },
+
+  to_currency_unsigned: (value) => {
+    const formatter = new Intl.NumberFormat(undefined, {
+      currency: "EUR",
+      style: "currency",
+      currencyDisplay: "code",
+    });
+
+    return formatter.format(value).replace("EUR", "").trim();
   },
 };
 

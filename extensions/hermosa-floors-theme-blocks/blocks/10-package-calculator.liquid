@@ -15,6 +15,7 @@
 
   # === Common ===
   assign label = settings.label
+  assign placeholder = settings.placeholder
   assign selected_label = settings.selected_label
   assign cutting_loss_notice = settings.cutting_loss_notice
   assign total_label = settings.total_label
@@ -86,9 +87,16 @@
 {%- endcapture -%}
 
 {%- capture total_price_html -%}
-{% assign priv_start_total = 0 | money %}
+{% if show_currency_sign == "yes" %}
+  {% assign priv_start_total = 0 | money %}
+  {% assign priv_package_price = product.price | money %}
+{% else %}
+  {% assign priv_start_total = 0 | money | replace: '€', '' | strip %}
+  {% assign priv_package_price = product.price | money | replace: '€', '' | strip %}
+{% endif %}
+
 {% render 'package-calculator.span-target', target: 'totals', value: priv_start_total %}
-<small>({{ product.price | money }} per pak)</small>
+<small>({{ priv_package_price }} per pak)</small>
 {%- endcapture -%}
 
 {%- comment -%} Styling {%- endcomment -%}
@@ -101,6 +109,10 @@
     --package-calculator--border-radius: {{ border_radius }}px;
     --package-calculator--border-color: {{ border_color }};
     --package-calculator--border-width: {{ border_width }}px;
+  }
+
+  package-calculator:not(:defined) {
+    display: none;
   }
 </style>
 
@@ -152,6 +164,7 @@
           min="0"
           id="{{ input_id }}"
           name="square_meters"
+          placeholder="{{ placeholder }}"
           required
         >
         <span>m<sup>2</sup></span>
@@ -229,9 +242,14 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "t:Headings.General.Content",
+      "info": "t:Headings.General.Info"
+    },
+    {
       "type": "text",
       "id": "label",
-      "label": "t:Settings.Label.Info",
+      "label": "t:Settings.Label.Label",
       "default": "Voor welke oppervlakte",
       "info": "t:Settings.Label.Info",
       "placeholder": "t:Settings.Label.Placeholder"
@@ -243,14 +261,6 @@
       "default": "Aantal m²",
       "info": "t:Settings.Placeholder.Info",
       "placeholder": "t:Settings.Placeholder.Placeholder"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "t:Blocks.PackageCalculator.Settings.ButtonLabel.Label",
-      "default": "Berekenen",
-      "info": "t:Blocks.PackageCalculator.Settings.ButtonLabel.Info",
-      "placeholder": "t:Blocks.PackageCalculator.Settings.ButtonLabel.Placeholder"
     },
     {
       "type": "text",
@@ -277,21 +287,17 @@
       "placeholder": "t:Blocks.PackageCalculator.Settings.TotalLabel.Placeholder"
     },
     {
-      "type": "select",
-      "id": "show_currency_sign",
-      "label": "t:Settings.ShowCurrencySign.Label",
-      "options": [
-        {
-          "value": "yes",
-          "label": "t:Syntax.Yes"
-        },
-        {
-          "value": "no",
-          "label": "t:Syntax.No"
-        }
-      ],
-      "default": "yes",
-      "info": "t:Settings.ShowCurrencySign.Info"
+      "type": "text",
+      "id": "button_label_atc",
+      "label": "t:Blocks.PackageCalculator.Settings.AddToCart.Label",
+      "default": "Toevoegen aan winkelmand",
+      "info": "t:Blocks.PackageCalculator.Settings.AddToCart.Info",
+      "placeholder": "t:Blocks.PackageCalculator.Settings.AddToCart.Placeholder"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Layout.Content",
+      "info": "t:Headings.Layout.Info"
     },
     {
       "type": "select",
@@ -326,30 +332,6 @@
       ],
       "default": "yes",
       "info": "t:Settings.AddShadows.Info"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:Settings.Colors.Background.Label",
-      "info": "t:Settings.Colors.Background.Info"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "t:Settings.Colors.Text.Label",
-      "info": "t:Settings.Colors.Text.Info"
-    },
-    {
-      "type": "color",
-      "id": "text_color_muted",
-      "label": "t:Settings.Colors.TextMuted.Label",
-      "info": "t:Settings.Colors.TextMuted.Info"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "t:Settings.BorderColor.Label",
-      "info": "t:Settings.BorderColor.Info"
     },
     {
       "type": "range",
@@ -392,12 +374,55 @@
       "default": 0
     },
     {
-      "type": "text",
-      "id": "button_label_atc",
-      "label": "t:Settings.AddToCart.Label",
-      "default": "Toevoegen aan winkelmand",
-      "info": "t:Settings.AddToCart.Info",
-      "placeholder": "t:Settings.AddToCart.Placeholder"
+      "type": "header",
+      "content": "t:Headings.Colors.Content",
+      "info": "t:Headings.Colors.Info"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:Settings.Colors.Background.Label",
+      "info": "t:Settings.Colors.Background.Info"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:Settings.Colors.Text.Label",
+      "info": "t:Settings.Colors.Text.Info"
+    },
+    {
+      "type": "color",
+      "id": "text_color_muted",
+      "label": "t:Settings.Colors.TextMuted.Label",
+      "info": "t:Settings.Colors.TextMuted.Info"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:Settings.BorderColor.Label",
+      "info": "t:Settings.BorderColor.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Other.Content",
+      "info": "t:Headings.Other.Info"
+    },
+    {
+      "type": "select",
+      "id": "show_currency_sign",
+      "label": "t:Settings.ShowCurrencySign.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "yes",
+      "info": "t:Settings.ShowCurrencySign.Info"
     }
   ]
 }

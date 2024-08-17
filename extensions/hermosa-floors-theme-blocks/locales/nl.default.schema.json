@@ -89,10 +89,10 @@
           "Info": "Gebruik %1% voor het aantal pakken uit de berekening. Gebruik %2% voor het ingevoerde aantal m².",
           "Placeholder": "%1% pak(ken) voor %2% m²"
         },
-        "ButtonLabel": {
-          "Label": "Knop label",
-          "Info": "Het label van de knop die de berekening start.",
-          "Placeholder": "Bereken"
+        "AddToCart": {
+          "Label": "Toevoegen aan winkelwagen label",
+          "Info": "Het label dat wordt weergegeven op de knop om het product toe te voegen aan de winkelwagen.",
+          "Placeholder": "Toevoegen aan winkelwagen"
         }
       }
     }
@@ -122,6 +122,14 @@
       "Label": "Hoekafrondingen",
       "Info": "De hoekafrondingen van een element.",
       "Placeholder": "5px"
+    },
+    "BorderWidth": {
+      "Label": "Randdikte",
+      "Info": "De dikte van de rand van een element."
+    },
+    "BorderColor": {
+      "Label": "Randkleur",
+      "Info": "De kleur van de rand van een element."
     },
     "ExtraStyles": {
       "Label": "Extra stijlregels",
@@ -178,11 +186,28 @@
         "Label": "Tekstkleur (hover)",
         "Info": "De kleur van de tekst van een element wanneer de muis erover beweegt.",
         "Placeholder": "#F4F4F4"
+      },
+      "TextMuted": {
+        "Label": "Tekstkleur (muted)",
+        "Info": "De kleur van de tekst van een element om minder indruk te maken.",
+        "Placeholder": "#C7C7C7"
+      },
+      "BorderColor": {
+        "Label": "Randkleur",
+        "Info": "De kleur van de rand van een element."
       }
     },
     "ShowCurrencySign": {
       "Label": "Valuta tonen",
       "Info": "Toon het valutasymbool voor het bedrag."
+    },
+    "AddBorder": {
+      "Label": "Rand toevoegen",
+      "Info": "Voeg een rand toe aan het element."
+    },
+    "AddShadows": {
+      "Label": "Schaduw toevoegen",
+      "Info": "Voeg een schaduw toe aan het element."
     }
   },
   "Headings": {

@@ -12,13 +12,18 @@ import { openCartDrawer } from "./utils/theme.mjs";
 import { transform } from "./utils/transformers.mjs";
 
 const packageCalculatorSelector = "package-calculator";
-const cartDrawerSelector = "cart-drawer";
 
 class PackageCalculator extends HTMLElement {
   connectedCallback() {
     super.connectedCallback?.();
 
-    this.addEventListener("input", this.#handleChange.bind(this));
+    bindEventListeners(this, [
+      {
+        type: "input",
+        handler: this.#handleChange.bind(this),
+      },
+    ]);
+
     bindEventListeners(this.querySelector("form"), [
       {
         type: "submit",
@@ -106,7 +111,9 @@ class PackageCalculator extends HTMLElement {
     ]);
 
     const packagesNeeded = divideCeiled(squareMeters, squareMetersPerPackage);
-    const totalPrice = transform(packagesNeeded * packagePrice, ["to_string"]);
+    const totalPrice = transform(packagesNeeded * packagePrice, [
+      this.#getCurrencyTransformer(),
+    ]);
 
     updateHtmlTarget("selected-packs", packagesNeeded);
     updateHtmlTarget("entered-surface-area", squareMeters);
@@ -122,10 +129,16 @@ class PackageCalculator extends HTMLElement {
     return true;
   }
 
-  #reset(toValue = 1) {
-    const input = this.querySelector('input[name="square_meters"]');
-    input.value = toValue;
-    this.#updateValues(toValue);
+  #reset() {
+    this.setAttribute("aria-expanded", "false");
+  }
+
+  #getCurrencyTransformer() {
+    if (getElementAttribute(this, "showCurrency", ["parse_boolean"])) {
+      return "to_currency";
+    }
+
+    return "to_currency_unsigned";
   }
 }
 
