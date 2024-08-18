@@ -95,6 +95,19 @@
           "Placeholder": "Toevoegen aan winkelwagen"
         }
       }
+    },
+    "SurfacePrice": {
+      "Name": "Prijs per oppervlakte",
+      "Settings": {
+        "ShowContents": {
+          "Label": "Pakketinhoud tonen",
+          "Info": "Toon de inhoud van een pakket naast de prijs."
+        },
+        "ShowSavings": {
+          "Label": "Besparing tonen",
+          "Info": "Toon de besparing die de klant maakt bij aankoop van een pakket."
+        }
+      }
     }
   },
   "Settings": {

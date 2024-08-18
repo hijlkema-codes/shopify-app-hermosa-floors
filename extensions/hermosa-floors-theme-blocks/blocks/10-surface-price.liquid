@@ -1,0 +1,155 @@
+{%- comment -%}
+  This block registers the specific block that will be used to show the price of the product.
+
+  ## Inner workings
+  This block will calculate the price per square footage using the product's price and compare at price.
+{%- endcomment -%}
+{% liquid
+  assign settings = block.settings
+  assign product = product
+
+  assign block_id = 'hc_custom_' | append: block.id
+  assign savings_id = block_id | append: '_savings'
+
+  assign show_contents = false
+  assign show_savings = false
+  assign has_metafield = false
+  assign has_savings = false
+
+  assign price = product.price
+  assign compare_at_price = product.compare_at_price
+  assign savings = compare_at_price | minus: product.price
+%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{% liquid
+  # LOGIC: Booleans
+  if settings.show_contents == 'yes'
+    assign show_contents = true
+  endif
+
+  if settings.show_savings == 'yes'
+    assign show_savings = true
+  endif
+
+  # LOGIC: Check if custom metafield exists
+  if product.metafields.custom.square_meters_per_package != blank
+    assign has_metafield = true
+  endif
+
+  # LOGIC: Check if savings exists
+  if compare_at_price != price
+    assign has_savings = true
+  endif
+
+  # LOGIC: Calculate price per
+  if has_metafield
+    assign price = price | divided_by: product.metafields.custom.square_meters_per_package
+  endif
+
+  if has_metafield and has_savings
+    assign compare_at_price = compare_at_price | divided_by: product.metafields.custom.square_meters_per_package
+  endif
+%}
+
+{%- comment -%} Styles {%- endcomment -%}
+<style id="{{ block_id }}"></style>
+
+{%- capture price_label -%}
+{% liquid
+  assign priv_class = 'product-price__current-price'
+
+  if has_savings
+    assign priv_class = priv_class | append: ' ' | append: 'product-price__current-price--highlight-sale'
+  endif
+%}
+<bdi class="{{- priv_class -}}">
+  {{ price | money }}
+  <small style="font-weight: normal;">per m<sup>2</sup></small>
+</bdi>
+{%- endcapture -%}
+
+{%- capture compare_at_label -%}
+{% liquid
+  assign priv_class = 'product-price__old-price'
+
+  if has_savings
+    assign priv_class = priv_class | append: ' ' | append: 'product-price__old-price--highlight-sale'
+  endif
+%}
+<del class="{{- priv_class -}}">
+  <bdi>{{ compare_at_price | money }}</bdi>
+</del>
+{%- endcapture -%}
+
+{%- capture savings_label -%}
+<span class="product-sale-amount-badge">Bespaar {{ savings | money }}</span>
+{%- endcapture -%}
+
+{%- capture contents_label -%}
+<span class="product-sale-amount-badge">Inhoud {{ product.metafields.custom.square_meters_per_package }}m<sup>2</sup></span>
+{%- endcapture -%}
+
+<div class="product-price block-price">
+  <div class="product-price__content">
+    <div class="product-price__cost">
+      {{- price_label -}}
+
+      {{- compare_at_label -}}
+    </div>
+
+    {% if show_savings %}
+      {{- savings_label -}}
+    {% endif %}
+
+    {% if show_contents %}
+      {{- contents_label -}}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:Blocks.SurfacePrice.Name",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_contents",
+      "label": "t:Blocks.SurfacePrice.Settings.ShowContents.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "no",
+      "info": "t:Blocks.SurfacePrice.Settings.ShowContents.Info"
+    },
+    {
+      "type": "select",
+      "id": "show_savings",
+      "label": "t:Blocks.SurfacePrice.Settings.ShowSavings.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "yes",
+      "info": "t:Blocks.SurfacePrice.Settings.ShowSavings.Info"
+    }
+  ]
+}
+{% endschema %}
