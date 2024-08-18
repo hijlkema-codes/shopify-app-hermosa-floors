@@ -210,6 +210,20 @@
         "Info": "De kleur van de rand van een element."
       }
     },
+    "Fonts": {
+      "FontWeight": {
+        "Label": "Letterdikte",
+        "Info": "De dikte van de tekst van een element."
+      },
+      "FontWeightStrong": {
+        "Label": "Letterdikte (sterk)",
+        "Info": "De dikte van de tekst van een element wanneer deze wordt gemarkeerd."
+      },
+      "FontSize": {
+        "Label": "Lettergrootte",
+        "Info": "De grootte van de tekst van een element."
+      }
+    },
     "ShowCurrencySign": {
       "Label": "Valuta tonen",
       "Info": "Toon het valutasymbool voor het bedrag."
@@ -235,6 +249,10 @@
     "Layout": {
       "Content": "Layout",
       "Info": "Layout instellingen voor dit blok."
+    },
+    "Fonts": {
+      "Content": "Lettertypes",
+      "Info": "Lettertype instellingen voor dit blok."
     },
     "Other": {
       "Content": "Overige",

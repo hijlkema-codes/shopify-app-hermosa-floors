@@ -18,6 +18,10 @@
   assign out_of = settings.out_of
   assign stars = settings.stars
   assign href = settings.href
+  # === Fonts ===
+  assign font_weight = settings.font_weight
+  assign font_weight_strong = settings.font_weight_strong
+  assign font_size = settings.font_size
   # === Colors ===
   assign base_color = settings.base_color
   assign highlight_color = settings.highlight_color
@@ -76,6 +80,8 @@
     color: {{ base_color | color_to_hsl }};
     --empty-star-color: {{ star_base_color | color_to_hsl }};
     --filled-star-color: {{ star_highlight_color | color_to_hsl }};
+    font-size: {{ font_size }}px;
+    font-weight: {{ font_weight }};
   }
 
   .{{ button_class }} p,
@@ -87,6 +93,7 @@
   .{{ button_class }} p span,
   .{{ button_class }} a span {
     color: {{ highlight_color | color_to_hsl }};
+    font-weight: {{ font_weight_strong }};
   }
 
   .{{ button_class }} a:hover {
@@ -164,6 +171,39 @@
       "id": "href",
       "label": "t:Settings.Url.Label",
       "info": "t:Settings.Url.Info"
+    },
+    {
+      "type": "header",
+      "content": "t:Headings.Fonts.Content",
+      "info": "t:Headings.Fonts.Info"
+    },
+    {
+      "type": "range",
+      "id": "font_weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "label": "t:Settings.Fonts.FontWeight.Label",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "font_weight_strong",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "label": "t:Settings.Fonts.FontWeightStrong.Label",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "t:Settings.Fonts.FontSize.Label",
+      "default": 16
     },
     {
       "type": "header",
