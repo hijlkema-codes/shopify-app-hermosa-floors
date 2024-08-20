@@ -6,7 +6,7 @@ import {
   setElementLoading,
   updateHtmlTarget,
 } from "./utils/html.mjs";
-import { addPercentageCeiled, divideCeiled } from "./utils/maths.mjs";
+import { addPercentageRounded, divideCeiled } from "./utils/maths.mjs";
 import { addToCart } from "./utils/shopify.mjs";
 import { openCartDrawer } from "./utils/theme.mjs";
 import { transform } from "./utils/transformers.mjs";
@@ -94,7 +94,7 @@ class PackageCalculator extends HTMLElement {
   }
 
   #calculateSurfaceWithCutoff(squareMeters) {
-    return addPercentageCeiled(
+    return addPercentageRounded(
       squareMeters,
       getElementAttribute(this, "cutoffPercentage", ["parse_float"])
     );
