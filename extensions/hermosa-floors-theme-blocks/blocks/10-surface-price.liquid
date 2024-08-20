@@ -58,71 +58,51 @@
     display: block;
   }
 
-  .product-price__tax-status {
-    margin: 0.4rem 0 0;
-    font-size: var(--gsc-fz-14);
-    line-height: var(--gsc-lh-6);
-    font-weight: ;
-  }
-
   .product-price__content {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-column-gap: 1.6rem;
-    -moz-column-gap: 1.6rem;
     column-gap: 1.6rem;
   }
 
   .product-price__cost {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: baseline;
-    -ms-flex-align: baseline;
     align-items: baseline;
-    -webkit-column-gap: 0.6rem;
-    -moz-column-gap: 0.6rem;
     column-gap: 0.6rem;
   }
 
   .product-price__current-price {
-    color: var(--gsc-text-color-100);
-    font-size: var(--gsc-product-price-fz);
-    line-height: var(--gsc-product-price-lh);
-    font-weight: var(--gsc-product-price-fw);
+    color: rgb(0 0 0);
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 700;
   }
 
   .product-price__current-price--highlight-sale {
-    color: var(--gsc-product-highlight-price-color);
+    color: rgb(0 0 0 / 0.35);
   }
 
   .product-price__old-price {
-    color: var(--gsc-text-color-35);
+    color: rgb(0 0 0 / 0.35);
     text-decoration: line-through;
-    font-size: var(--gsc-product-old-price-font-size);
-    line-height: var(--gsc-product-old-price-line-height);
-    font-weight: var(--gsc-product-old-price-font-weight);
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 500;
   }
 
   .product-price__old-price--highlight-sale {
-    text-decoration-color: var(--gsc-product-highlight-price-color);
+    text-decoration-color: rgb(0 0 0);
   }
 </style>
 
 {%- capture price_label -%}
-{% liquid
+{%- liquid
   assign priv_class = 'product-price__current-price'
 
   if has_savings
     assign priv_class = priv_class | append: ' ' | append: 'product-price__current-price--highlight-sale'
   endif
-%}
+-%}
 <bdi class="{{- priv_class -}}">
   {{ price | money }}
   <small style="font-weight: normal;">per m<sup>2</sup></small>
