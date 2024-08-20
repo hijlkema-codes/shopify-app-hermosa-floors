@@ -1,0 +1,67 @@
+{%- comment -%}
+  This block registers the styles and settings forr the mobile header.
+{%- endcomment -%}
+
+{%- comment -%} Variable declarations {%- endcomment -%}
+{%- liquid
+  assign settings = block.settings
+
+  assign has_border = settings.has_border
+  assign border_color = settings.border_color
+
+  assign menu_background_color = settings.menu_background_color
+
+  assign border_styles = ''
+-%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{%- liquid
+  if has_border == 'yes'
+    assign border_color = border_color | color_to_rgb
+    assign border_styles = '1px solid ' | append: border_color
+  endif
+-%}
+
+<style id="hc_custom_mobile-styles">
+  drawer-menu drawer-menu-page drawer-menu-page-link {
+      {% if has_border == "yes" %}
+        border-bottom: {{- border_styles -}};
+        border-radius: 0;
+      {% endif %}
+  }
+</style>
+{% schema %}
+{
+  "name": "t:Blocks.MobileStyles.Name",
+  "target": "head",
+  "settings": [
+    {
+      "type": "select",
+      "id": "has_border",
+      "label": "t:Settings.AddBorder.Info",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "no"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:Settings.BorderColor.Info"
+    },
+    {
+      "type": "color",
+      "id": "menu_background_color",
+      "label": "t:Settings.Colors.Background.Label",
+      "info": "t:Settings.Colors.Background.Info"
+    }
+  ]
+}
+{% endschema %}
