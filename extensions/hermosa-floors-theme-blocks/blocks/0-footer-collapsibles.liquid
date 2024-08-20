@@ -13,7 +13,7 @@
   assign settings = block.settings
 
   assign chevron_color = settings.chevron_color
-  assign show_chevron == settings.show_chevron
+  assign show_chevron = settings.show_chevron
 -%}
 
 {%- capture svg_icon -%}
@@ -70,6 +70,8 @@
 {%- endif -%}
 
 <style id="hc_custom_footer_styles"></style>
+
+<script src="{{ 'footer-collapsibles.mjs' | asset_url  }}" async defer></script>
 
 {% schema %}
 {
