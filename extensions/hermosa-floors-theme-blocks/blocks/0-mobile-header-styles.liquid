@@ -29,6 +29,12 @@
         border-radius: 0;
       {% endif %}
   }
+
+  {% if menu_background_color != blank %}
+  drawer-menu drawer-menu-page .drawer-menu__content {
+    background-color: {{- menu_background_color | color_to_hsl -}};
+  }
+  {% endif %}
 </style>
 {% schema %}
 {
