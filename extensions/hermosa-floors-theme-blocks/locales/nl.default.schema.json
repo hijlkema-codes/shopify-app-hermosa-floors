@@ -71,6 +71,19 @@
         }
       }
     },
+    "FooterCollapsibles": {
+      "Name": "Footer Collapsibles",
+      "Settings": {
+        "ShowChevron": {
+          "Label": "Toon een icoon.",
+          "Info": "Het icoon komt naast de titel van de collapsible."
+        },
+        "ChevronColor": {
+          "Label": "Icoonkleur",
+          "Info": "De kleur van het klap-icoon."
+        }
+      }
+    },
     "PackageCalculator": {
       "Name": "Verpakking rekenmachine",
       "Settings": {

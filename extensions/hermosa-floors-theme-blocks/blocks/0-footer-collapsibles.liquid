@@ -1,0 +1,105 @@
+{%- comment -%}
+  This block registers the styles and scripts for the footer collapsible
+  modifications. By doing this we get to keep the theme's codebase clean and
+  support a more familiar development workflow.
+
+  ## Inner workings
+  Look for the `.footer__container` class as parent where the collapsibles are of
+  CSS Selector `.footer__container .footer__card-grid:has(.footer__title)`
+{%- endcomment -%}
+
+{%- comment -%} Variable declarations {%- endcomment -%}
+{%- liquid
+  assign settings = block.settings
+
+  assign chevron_color = settings.chevron_color
+  assign show_chevron == settings.show_chevron
+-%}
+
+{%- capture svg_icon -%}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+    <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" fill="{{ chevron_color | color_to_rgb }}" />
+</svg>
+{%- endcapture -%}
+
+{%- comment -%} Logic {%- endcomment -%}
+{%- liquid
+  assign image = svg_icon | base64_encode
+-%}
+
+{%- capture chevron_styles -%}
+<style>
+  .footer__container .footer__title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer__container .footer__title[aria-expanded="false"] {
+    margin-bottom: 0;
+  }
+
+  .footer__container .footer__title[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+    transition-timing-function: ease-in;
+  }
+
+  .footer__container .footer__title::after {
+    content: '';
+    width: 1em;
+    height: 1em;
+    background-image: url('data:image/svg+xml;base64,{{ image }}');
+    background-repeat: no-repeat;
+    background-size: 1em 1em;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease-out;
+  }
+
+  @media screen and (min-width: 768px) {
+    .footer__container .footer__title::after {
+      content: unset;
+    }
+  }
+</style>
+{%- endcapture -%}
+
+{%- comment -%} Styles {%- endcomment -%}
+{%- if show_chevron == 'yes' -%}
+  {{- chevron_styles -}}
+{%- endif -%}
+
+<style id="hc_custom_footer_styles"></style>
+
+{% schema %}
+{
+  "name": "t:Blocks.FooterCollapsibles.Name",
+  "target": "body",
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_chevron",
+      "label": "t:Blocks.FooterCollapsibles.Settings.ShowChevron.Label",
+      "options": [
+        {
+          "value": "yes",
+          "label": "t:Syntax.Yes"
+        },
+        {
+          "value": "no",
+          "label": "t:Syntax.No"
+        }
+      ],
+      "default": "yes",
+      "info": "t:Blocks.FooterCollapsibles.Settings.ShowChevron.Info"
+    },
+    {
+      "type": "color",
+      "id": "chevron_color",
+      "label": "t:Blocks.FooterCollapsibles.Settings.ChevronColor.Label",
+      "default": "#ffffff",
+      "info": "t:Blocks.FooterCollapsibles.Settings.ChevronColor.Info"
+    }
+  ]
+}
+{% endschema %}

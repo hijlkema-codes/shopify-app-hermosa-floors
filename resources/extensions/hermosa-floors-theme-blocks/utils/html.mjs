@@ -49,3 +49,11 @@ export const setElementLoading = (element, isLoading = true) => {
     element.setAttribute("aria-busy", "false");
   }
 };
+
+export const ensureElementHasId = (element) => {
+  if (!element.id) {
+    element.id = `id-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  return element.id;
+}
