@@ -121,6 +121,9 @@
           "Info": "Toon de besparing die de klant maakt bij aankoop van een pakket."
         }
       }
+    },
+    "MobileStyles": {
+      "Name": "Mobiele stijlen"
     }
   },
   "Settings": {
