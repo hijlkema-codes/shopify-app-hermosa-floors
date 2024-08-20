@@ -29,6 +29,8 @@ const TRANSFORMERS = {
 
     return formatter.format(value).replace("EUR", "").trim();
   },
+
+  from_cents: (value) => value / 100
 };
 
 export const transform = (value, transformers) => {

@@ -108,6 +108,7 @@ class PackageCalculator extends HTMLElement {
     );
     const packagePrice = getElementAttribute(this, "productPrice", [
       "parse_float",
+      "from_cents",
     ]);
 
     const packagesNeeded = divideCeiled(squareMeters, squareMetersPerPackage);
