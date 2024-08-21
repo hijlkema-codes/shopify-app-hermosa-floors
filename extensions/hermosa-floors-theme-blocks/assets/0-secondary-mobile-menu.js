@@ -13,7 +13,7 @@ const init = () => {
   const templateContentNode = getTemplateContentNode();
   getElementToRemove()?.remove();
 
-  if (menuElement) {
+  if (menuElement && templateContentNode) {
     menuElement.appendChild(templateContentNode);
   }
 };
