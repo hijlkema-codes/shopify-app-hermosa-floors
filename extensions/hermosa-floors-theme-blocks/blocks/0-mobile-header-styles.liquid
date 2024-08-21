@@ -10,8 +10,11 @@
   assign border_color = settings.border_color
 
   assign menu_background_color = settings.menu_background_color
+  assign menu_color = settings.menu_color
 
   assign secondary_menu = settings.secondary_menu
+  assign secondary_menu_background_color = settings.secondary_menu_background_color
+  assign secondary_menu_color = settings.secondary_menu_color
 
   assign border_styles = ''
 -%}
@@ -33,16 +36,32 @@
   }
 
   {% if menu_background_color != blank %}
-  drawer-menu drawer-menu-page .drawer-menu__content {
-    background-color: {{- menu_background_color | color_to_hsl -}};
-  }
+    drawer-menu drawer-menu-page .drawer-menu__content {
+      background-color: {{- menu_background_color | color_to_hsl -}};
+    }
   {% endif %}
+
+  {% unless menu_color == blank %}
+    drawer-menu drawer-menu-page .drawer-menu__content {
+      color: {{- menu_color | color_to_hsl -}}
+    }
+  {% endunless %}
 </style>
 
 {%- comment -%} Create Secondary menu {%- endcomment -%}
 {%- unless secondary_menu == blank -%}
+  <style>
+    .drawer-menu__list.drawer-menu__list-secondary {
+      flex: 1;
+      background-color: {{ secondary_menu_background_color | color_to_hsl }};
+      color: {{ secondary_menu_color | color_to_hsl }};
+    }
+  </style>
   <template id="hc_secondary_menu">
-    <div class="drawer-menu__list drawer-menu__list--without-mega-menu drawer-menu__list-secondary">
+    <div
+      class="drawer-menu__list drawer-menu__list--without-mega-menu drawer-menu__list-secondary"
+      id="hc_secondary_menu_drawer"
+    >
       <div class="drawer-menu__list-inner">
         <div class="drawer-menu__list-body">
           {% for item in secondary_menu.links %}
@@ -103,10 +122,28 @@
       "info": "t:Settings.Colors.Background.Info"
     },
     {
+      "type": "color",
+      "id": "menu_color",
+      "label": "Menu color",
+      "info": "Menu color info"
+    },
+    {
       "type": "link_list",
       "id": "secondary_menu",
       "label": "Secondary menu",
       "info": "Secondary menu info"
+    },
+    {
+      "type": "color",
+      "id": "secondary_menu_background_color",
+      "label": "Secondary menu background color",
+      "info": "Secondary menu background color info"
+    },
+    {
+      "type": "color",
+      "id": "secondary_menu_color",
+      "label": "Secondary menu Color",
+      "info": "Secondary menu color info"
     }
   ]
 }
