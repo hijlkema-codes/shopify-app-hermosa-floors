@@ -1,5 +1,6 @@
 const TEMPLATE_SELECTOR = "#hc_secondary_menu";
-const MENU_SELECTOR = "drawer-menu drawer-menu-page[data-page-id='Menu']";
+const MENU_SELECTOR =
+  "drawer-menu drawer-menu-page[data-page-id='Menu'] .drawer-menu__content";
 
 const getMenuElement = () => document.querySelector(MENU_SELECTOR);
 const getTemplateContentNode = () =>
@@ -15,3 +16,9 @@ const init = () => {
 };
 
 init();
+
+document.body.addEventListener("click", ({ target }) => {
+  if (target.hasAttribute("data-sidebar-button")) {
+    init();
+  }
+});

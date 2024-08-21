@@ -40,33 +40,35 @@
 </style>
 
 {%- comment -%} Create Secondary menu {%- endcomment -%}
-<template id="hc_secondary_menu">
-  <div class="drawer-menu__list drawer-menu__list--without-mega-menu">
-    <div class="drawer-menu__list-inner">
-      <div class="drawer-menu__list-body">
-        {% for item in secondary_menu.links %}
-          {%- liquid
-            assign priv_title = item.title
-            assign priv_handle = item.handle
-            assign priv_url = item.url
-          -%}
-          <drawer-menu-page-link
-            class="drawer-menu__menu-item"
-            data-page-id="DrawerMenuPage-{{ priv_handle }}"
-            tabindex="0"
-            menu-title="{{ priv_title}}"
-          >
-            <a href="{{ priv_url }}">
-              <span class="drawer-menu__menu-item-label"> {{ priv_title }} </span>
-            </a>
-          </drawer-menu-page-link>
-        {% endfor %}
+{%- unless secondary_menu == blank -%}
+  <template id="hc_secondary_menu">
+    <div class="drawer-menu__list drawer-menu__list--without-mega-menu drawer-menu__list-secondary">
+      <div class="drawer-menu__list-inner">
+        <div class="drawer-menu__list-body">
+          {% for item in secondary_menu.links %}
+            {%- liquid
+              assign priv_title = item.title
+              assign priv_handle = item.handle
+              assign priv_url = item.url
+            -%}
+            <drawer-menu-page-link
+              class="drawer-menu__menu-item"
+              data-page-id="DrawerMenuPage-{{ priv_handle }}"
+              tabindex="0"
+              menu-title="{{ priv_title }}"
+            >
+              <a href="{{ priv_url }}">
+                <span class="drawer-menu__menu-item-label"> {{ priv_title }} </span>
+              </a>
+            </drawer-menu-page-link>
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
-</template>
+  </template>
 
-<script src="{{ '0-secondary-mobile-menu.js' | asset_url }}" async defer></script>
+  <script src="{{ '0-secondary-mobile-menu.js' | asset_url }}" async defer></script>
+{%- endunless -%}
 
 {% schema %}
 {
