@@ -16,7 +16,7 @@ const createCollapsibles = () => {
   );
   const hasCollapsibles = collapsibles.length > 0;
 
-  // If there are no collapsibles, stop execution.
+  // If there are no collapsable, stop execution.
   if (!hasCollapsibles) {
     return;
   }
