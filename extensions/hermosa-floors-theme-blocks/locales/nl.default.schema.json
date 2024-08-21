@@ -123,7 +123,29 @@
       }
     },
     "MobileStyles": {
-      "Name": "Mobiele stijlen"
+      "Name": "Mobiele stijlen",
+      "Settings": {
+        "MenuBackgroundColor": {
+          "Label": "Achtergrondkleur menu",
+          "Info": "De kleur van de achtergrond van het mobiele menu."
+        },
+        "MenuColor": {
+          "Label": "Tekstkleur menu",
+          "Info": "De kleur van de tekst van het mobiele menu."
+        },
+        "SecondaryMenu": {
+          "Label": "Secundair menu",
+          "Info": "Toon een secundair menu op mobiel."
+        },
+        "SecondaryMenuBackgroundColor": {
+          "Label": "Achtergrondkleur secundair menu",
+          "Info": "De kleur van de achtergrond van het secundaire mobiele menu."
+        },
+        "SecondaryMenuColor": {
+          "Label": "Tekstkleur secundair menu",
+          "Info": "De kleur van de tekst van het secundaire mobiele menu."
+        }
+      }
     }
   },
   "Settings": {
