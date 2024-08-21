@@ -28,7 +28,7 @@
 -%}
 
 <style id="hc_custom_mobile-styles">
-  drawer-menu drawer-menu-page drawer-menu-page-link {
+  drawer-menu drawer-menu-page .drawer-menu__menu-item {
       {% if has_border == "yes" %}
         border-bottom: {{- border_styles -}};
         border-radius: 0 !important;
@@ -75,7 +75,7 @@
               assign priv_handle = item.handle
               assign priv_url = item.url
             -%}
-            <drawer-menu-page-link
+            <div
               class="drawer-menu__menu-item"
               data-page-id="DrawerMenuPage-{{ priv_handle }}"
               tabindex="0"
@@ -84,7 +84,7 @@
               <a href="{{ priv_url }}">
                 <span class="drawer-menu__menu-item-label"> {{ priv_title }} </span>
               </a>
-            </drawer-menu-page-link>
+            </div>
           {% endfor %}
         </div>
       </div>
