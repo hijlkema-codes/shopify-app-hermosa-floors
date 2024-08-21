@@ -48,6 +48,7 @@
   endif
 
   if has_metafield and has_savings
+    assign compare_at_price = compare_at_price | minus: product.price
     assign compare_at_price = compare_at_price | divided_by: product.metafields.custom.square_meters_per_package
   endif
 %}
