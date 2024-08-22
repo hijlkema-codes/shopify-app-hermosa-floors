@@ -2,6 +2,7 @@ const TEMPLATE_SELECTOR = "#hc_secondary_menu";
 const MENU_SELECTOR =
   "drawer-menu drawer-menu-page[data-page-id='Menu'] .drawer-menu__content";
 const REMOVE_MENU_SELECTOR = "#hc_secondary_menu_drawer";
+const DRAWER_SELECTOR = "drawer-menu";
 
 const getMenuElement = () => document.querySelector(MENU_SELECTOR);
 const getTemplateContentNode = () =>
@@ -25,3 +26,8 @@ document.body.addEventListener("click", ({ target }) => {
     init();
   }
 });
+
+// Create a mutationobserver that triggers init when the drawer classList is changed
+const drawer = document.querySelector(DRAWER_SELECTOR);
+const observer = new MutationObserver(init);
+observer.observe(drawer, { attributes: true });
