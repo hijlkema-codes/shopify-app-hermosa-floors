@@ -15,6 +15,8 @@
 
 window.viewData = window.viewData || {};
 
+const DRAWER_SELECTOR = "drawer-menu";
+
 window.viewData.reviewStars = new (class {
   /**
    * @param {ReviewStars} config
@@ -132,8 +134,7 @@ const handler = () => {
 };
 
 // Create a mutationobserver that triggers init when the drawer classList is changed
-const drawer = document.querySelector(DRAWER_SELECTOR);
 const observer = new MutationObserver(handler);
-observer.observe(drawer, { attributes: true });
+observer.observe(document.querySelector(DRAWER_SELECTOR), { attributes: true });
 
 handler();

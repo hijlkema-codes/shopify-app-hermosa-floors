@@ -22,6 +22,5 @@ const init = () => {
 init();
 
 // Create a mutationobserver that triggers init when the drawer classList is changed
-const drawer = document.querySelector(DRAWER_SELECTOR);
 const observer = new MutationObserver(init);
-observer.observe(drawer, { attributes: true });
+observer.observe(document.querySelector(DRAWER_SELECTOR), { attributes: true });
