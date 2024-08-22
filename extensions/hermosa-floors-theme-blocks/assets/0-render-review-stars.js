@@ -131,10 +131,9 @@ const handler = () => {
   window.viewData.reviewStars.loop();
 };
 
-document.body.addEventListener("click", ({ target }) => {
-  if (target.hasAttribute("data-sidebar-button")) {
-    handler();
-  }
-});
+// Create a mutationobserver that triggers init when the drawer classList is changed
+const drawer = document.querySelector(DRAWER_SELECTOR);
+const observer = new MutationObserver(handler);
+observer.observe(drawer, { attributes: true });
 
 handler();
