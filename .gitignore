@@ -17,5 +17,6 @@ logs
 
 # extensions build output
 extensions/*/build
+.idea
 
 # lock files

@@ -124,6 +124,12 @@
   </style>
 </noscript>
 
+<style>
+  product-form:not(#{{ product_form_id }}) {
+    display: none !important;
+  }
+</style>
+
 <package-calculator
   data-product-id="{{ product.first_available_variant.id }}"
   data-cutoff-percentage="{{ cutoff_percentage }}"
